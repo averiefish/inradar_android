@@ -9,9 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
+
 
 /**
  * Created by bili on 11/8/14.
@@ -19,7 +23,7 @@ import android.widget.Toast;
 public class LinkedInLoginFragment extends Fragment
         implements BaseResultReceiver.ReceiverCallBack{
     private static final String TAG = "LinkedInLoginFragment";
-    private static final String LinkedInMyProfileEndpoint = "http://10.0.3.2:8000/linkedin_login/test";
+    private static final String LinkedInMyProfileEndpoint = "http://www.google.com";
 
     public static final String EXTRA_PROFILE = "com.linkedin.inradar.profile";
 
@@ -48,18 +52,28 @@ public class LinkedInLoginFragment extends Fragment
         mLoginWithLinkedInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String access_token = mAccessTokenEditText.getText().toString();
-                Toast.makeText(getActivity(), access_token, Toast.LENGTH_LONG).show();
-                Log.d(TAG, "starting service intent");
-                Intent i = new Intent("com.linkedin.inradar.HttpClientService");
-                i.putExtra(HttpClientService.EXTRA_REST_ENDPOINT, LinkedInMyProfileEndpoint);
-                i.putExtra(HttpClientService.EXTRA_REST_RESULT_RECEIVER, mResultReceiver);
-                v.getContext().startService(i);
+                Intent i = new Intent(getActivity(), RadarActivity.class);
+                i.putExtra(EXTRA_PROFILE, "aaa");
+                startActivity(i);
+//                String access_token = mAccessTokenEditText.getText().toString();
+//                Toast.makeText(getActivity(), access_token, Toast.LENGTH_LONG).show();
+//                Log.d(TAG, "starting service intent");
+//                Intent i = new Intent("com.linkedin.inradar.HttpClientService");
+//                i.putExtra(HttpClientService.EXTRA_REST_ENDPOINT, LinkedInMyProfileEndpoint);
+//                i.putExtra(HttpClientService.EXTRA_REST_RESULT_RECEIVER, mResultReceiver);
+//                v.getContext().startService(i);
             }
         });
 
+        RadarAnimation imageAnimation = new RadarAnimation(v, R.id.bg_1);
+        imageAnimation.fadeInAnimation(1500,1600);
+//        fadeInAnimation(R.id.bg_1, 1500, 1600, v);
+//        generateAnimation(R.id.bg_2, 1500, 3200, v);
+
         return v;
+
     }
+
 
     @Override
     public void onReceiveResult(int receiverId, int resultCode, Bundle resultData) {
