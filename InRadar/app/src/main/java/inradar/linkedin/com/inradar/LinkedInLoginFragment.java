@@ -66,9 +66,9 @@ public class LinkedInLoginFragment extends Fragment
         });
 
         RadarAnimation imageAnimation = new RadarAnimation(v, R.id.bg_1);
+        RadarAnimation imageAnimation2 = new RadarAnimation(v, R.id.bg_2);
         imageAnimation.fadeInAnimation(1500,1600);
-//        fadeInAnimation(R.id.bg_1, 1500, 1600, v);
-//        generateAnimation(R.id.bg_2, 1500, 3200, v);
+        imageAnimation2.fadeInAnimation(1500,3200);
 
         return v;
 

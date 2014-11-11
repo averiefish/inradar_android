@@ -6,6 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 /**
@@ -14,6 +17,7 @@ import android.widget.TextView;
 public class RadarFragment extends Fragment {
     private static final String TAG = "RadarFragment";
     private String mTestContent;
+    private WebView mWebView;
 
     public RadarFragment() {
         super();
@@ -36,6 +40,16 @@ public class RadarFragment extends Fragment {
 
         TextView mTestTextView = (TextView)v.findViewById(R.id.test_text_view);
         mTestTextView.setText(mTestContent);
+
+        mWebView = (WebView)v.findViewById(R.id.radar_background);
+        WebSettings settings = mWebView.getSettings();
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        mWebView.loadUrl("file:///android_asset/html/radar.html");
+
+        FrameLayout frameLayout = (FrameLayout)v.findViewById(R.id.people_nearby);
+
+        RadarAnimation.updateDOM(data);
 
         return v;
     }
