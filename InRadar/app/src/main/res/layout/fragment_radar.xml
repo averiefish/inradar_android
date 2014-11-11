@@ -11,4 +11,10 @@
         android:text="New Text"
         android:id="@+id/test_text_view"
         android:layout_gravity="center_horizontal"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start_spot_btn"
+        android:id="@+id/spot_button"
+        android:layout_gravity="center_horizontal"/>
 </LinearLayout>

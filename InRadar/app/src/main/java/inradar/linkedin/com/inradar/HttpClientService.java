@@ -29,6 +29,7 @@ public class HttpClientService extends IntentService {
 
     public static final String EXTRA_REST_ENDPOINT = "com.linkedin.inradar.rest_endpoint";
     public static final String EXTRA_REST_RESULT_RECEIVER = "com.linkedin.inradar.rest_result_receiver";
+    public static final String EXTRA_REST_PARAMS = "com.linkedin.inradar.rest_params";
     public static final String EXTRA_REST_RESULT = "com.linkedin.inradar.rest_result";
 
 //    private static final String EXTRA_REST_RESULT_RECEIVER = "com.linkedin.inradar.rest_result_receiver";
@@ -46,26 +47,17 @@ public class HttpClientService extends IntentService {
         GET, POST
     }
 
-    public static String getStringFromInputStream(InputStream stream) throws IOException
-    {
-        int n = 0;
-        char[] buffer = new char[1024 * 4];
-        InputStreamReader reader = new InputStreamReader(stream, "UTF8");
-        StringWriter writer = new StringWriter();
-        while (-1 != (n = reader.read(buffer))) writer.write(buffer, 0, n);
-        return writer.toString();
-    }
-
     @Override
     protected void onHandleIntent(Intent intent) {
         Bundle extras = intent.getExtras();
-        //Uri endpoint = intent.getData();
         String endpoint = extras.getString(EXTRA_REST_ENDPOINT);
         ResultReceiver receiver = extras.getParcelable(EXTRA_REST_RESULT_RECEIVER);
+        Bundle param = extras.getBundle(EXTRA_REST_PARAMS);
         Log.d(TAG, endpoint);
         try {
             HttpRequestBase request = null;
-            request = new HttpGet(endpoint);
+            String url = Utils.buildUriWithQueryParams(endpoint, param);
+            request = new HttpGet(url);
 
             if (request != null) {
                 HttpClient client = new DefaultHttpClient();
@@ -83,7 +75,7 @@ public class HttpClientService extends IntentService {
                 if (responseEntity != null) {
                     Log.d(TAG, "has entity");
                     InputStream contentInputStream = responseEntity.getContent();
-                    String content = getStringFromInputStream(contentInputStream);
+                    String content = Utils.getStringFromInputStream(contentInputStream);
                     Log.d(TAG, content);
                     Bundle resultData = new Bundle();
                     resultData.putString(EXTRA_REST_RESULT, content);
